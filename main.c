@@ -89,6 +89,7 @@ Room **mapSetUp()
   drawRoom(rooms[2]);
 
   connectDoors(rooms[0]->doors[3], rooms[2]->doors[1]);
+  connectDoors(rooms[1]->doors[2], rooms[0]->doors[0]);
 
   return rooms;
 }
@@ -165,35 +166,56 @@ int drawRoom(Room *room)
 int connectDoors(Position *doorOne, Position *doorTwo)
 {
   Position temp;
+  Position previous;
+
+  int count = 0;
+
   temp.x = doorOne->x;
   temp.y = doorOne->y;
 
+  previous = temp;
+
   while (1)
   {
+    // left
     if ((abs((temp.x - 1) - doorTwo->x) < abs(temp.x - doorTwo->x)) && (mvinch(temp.y, temp.x - 1) == ' '))
     {
-      mvprintw(temp.y, temp.x - 1, "#");
+      previous.x = temp.x;
       temp.x = temp.x - 1;
     }
+    // right
     else if ((abs((temp.x + 1) - doorTwo->x) < abs(temp.x - doorTwo->x)) && (mvinch(temp.y, temp.x + 1) == ' '))
     {
-      mvprintw(temp.y, temp.x + 1, "#");
+      previous.x = temp.x;
       temp.x = temp.x + 1;
     }
+    // down
     else if ((abs((temp.y + 1) - doorTwo->y) < abs(temp.y - doorTwo->y)) && (mvinch(temp.y + 1, temp.x) == ' '))
     {
-      mvprintw(temp.y + 1, temp.x, "#");
+      previous.y = temp.y;
       temp.y = temp.y + 1;
     }
+    // up
     else if ((abs((temp.y - 1) - doorTwo->y) < abs(temp.y - doorTwo->y)) && (mvinch(temp.y - 1, temp.x) == ' '))
     {
-      mvprintw(temp.y - 1, temp.x, "#");
+      previous.y = temp.y;
       temp.y = temp.y - 1;
     }
     else
     {
-      return 0;
+      if (count == 0) 
+      {
+        temp = previous;
+        count++;;
+        continue;
+      } 
+      else 
+      {
+        return 0;
+      }
     }
+
+    mvprintw(temp.y, temp.x, "#");
 
     getch();
   }
