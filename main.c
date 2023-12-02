@@ -16,7 +16,7 @@ typedef struct Room
   int height;
   int width;
 
-  Position doors[4];
+  Position **doors;
   // Monster **monsters;
   // Item **items;
 } Room;
@@ -36,6 +36,7 @@ int checkPosition(int newY, int newX, Player *user);
 
 // room functions
 Room * createRoom(int x, int y, int height, int width);
+int connectDoors(Position *doorOne, Position *doorTwo);
 int drawRoom(Room *room);
 
 int main()
@@ -87,6 +88,8 @@ Room **mapSetUp()
   rooms[2] = createRoom(40, 10, 6, 8);
   drawRoom(rooms[2]);
 
+  connectDoors(rooms[0]->doors[3], rooms[2]->doors[1]);
+
   return rooms;
 }
 
@@ -99,21 +102,27 @@ Room * createRoom(int x, int y, int height, int width)
   newRoom->height = height;
   newRoom->width = width;
 
-  // top door
-  newRoom->doors[0].x = rand() % (width - 2) + x + 1;
-  newRoom->doors[0].y = newRoom->position.y;
+  newRoom->doors = malloc(sizeof(Position *) * 4);
 
-  // bottom door
-  newRoom->doors[1].x = rand() % (width - 2) + x + 1;
-  newRoom->doors[1].y = newRoom->position.y + newRoom->height - 1;
+  // top door
+  newRoom->doors[0] = malloc(sizeof(Position));
+  newRoom->doors[0]->x = rand() % (width - 2) + x + 1;
+  newRoom->doors[0]->y = newRoom->position.y;
 
   // left door
-  newRoom->doors[2].x = newRoom->position.x;
-  newRoom->doors[2].y = rand() % (height - 2) + y + 1;
+  newRoom->doors[1] = malloc(sizeof(Position));
+  newRoom->doors[1]->x = newRoom->position.x;
+  newRoom->doors[1]->y = rand() % (height - 2) + y + 1;
+
+  // bottom door
+  newRoom->doors[2] = malloc(sizeof(Position));
+  newRoom->doors[2]->x = rand() % (width - 2) + x + 1;
+  newRoom->doors[2]->y = newRoom->position.y + newRoom->height - 1;
 
   // right door
-  newRoom->doors[3].x = newRoom->position.x + newRoom->width - 1;
-  newRoom->doors[3].y = rand() % (height - 2) + y + 1;
+  newRoom->doors[3] = malloc(sizeof(Position));
+  newRoom->doors[3]->x = newRoom->position.x + newRoom->width - 1;
+  newRoom->doors[3]->y = rand() % (height - 2) + y + 1;
 
   return newRoom;
 }
@@ -145,11 +154,49 @@ int drawRoom(Room *room)
   }
 
   // draw doors
-  mvprintw(room->doors[0].y, room->doors[0].x, "+");
-  mvprintw(room->doors[1].y, room->doors[1].x, "+");
-  mvprintw(room->doors[2].y, room->doors[2].x, "+");
-  mvprintw(room->doors[3].y, room->doors[3].x, "+");
+  mvprintw(room->doors[0]->y, room->doors[0]->x, "+");
+  mvprintw(room->doors[1]->y, room->doors[1]->x, "+");
+  mvprintw(room->doors[2]->y, room->doors[2]->x, "+");
+  mvprintw(room->doors[3]->y, room->doors[3]->x, "+");
 
+  return 1;
+}
+
+int connectDoors(Position *doorOne, Position *doorTwo)
+{
+  Position temp;
+  temp.x = doorOne->x;
+  temp.y = doorOne->y;
+
+  while (1)
+  {
+    if ((abs((temp.x - 1) - doorTwo->x) < abs(temp.x - doorTwo->x)) && (mvinch(temp.y, temp.x - 1) == ' '))
+    {
+      mvprintw(temp.y, temp.x - 1, "#");
+      temp.x = temp.x - 1;
+    }
+    else if ((abs((temp.x + 1) - doorTwo->x) < abs(temp.x - doorTwo->x)) && (mvinch(temp.y, temp.x + 1) == ' '))
+    {
+      mvprintw(temp.y, temp.x + 1, "#");
+      temp.x = temp.x + 1;
+    }
+    else if ((abs((temp.y + 1) - doorTwo->y) < abs(temp.y - doorTwo->y)) && (mvinch(temp.y + 1, temp.x) == ' '))
+    {
+      mvprintw(temp.y + 1, temp.x, "#");
+      temp.y = temp.y + 1;
+    }
+    else if ((abs((temp.y - 1) - doorTwo->y) < abs(temp.y - doorTwo->y)) && (mvinch(temp.y - 1, temp.x) == ' '))
+    {
+      mvprintw(temp.y - 1, temp.x, "#");
+      temp.y = temp.y - 1;
+    }
+    else
+    {
+      return 0;
+    }
+
+    getch();
+  }
   return 1;
 }
 
@@ -209,6 +256,8 @@ int checkPosition(int newY, int newX, Player *user)
   switch (mvinch(newY, newX))
   {
     case '.':
+    case '#':
+    case '+':
       playerMove(newY, newX, user);
       break;
     default:
