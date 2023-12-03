@@ -7,58 +7,57 @@ Player *playerSetUp()
 
   newPlayer->position.x = 14;
   newPlayer->position.y = 14;
-  newPlayer->health    = 20;
+  newPlayer->health     = 20;
 
-  playerMove(14, 14, newPlayer);
+  mvprintw(newPlayer->position.y, newPlayer->position.x, "@");
+  move(newPlayer->position.y, newPlayer->position.x);
 
   return newPlayer;
 }
 
-int handleInput(int input, Player *user)
+Position *handleInput(int input, Player *user)
 {
-  int newY;
-  int newX;
+  Position *newPosition;
+  newPosition = malloc(sizeof(Position));
 
   switch (input)
   {
     case 'w':
     case 'W':
-      newY = user->position.y - 1;
-      newX = user->position.x;
+      newPosition->y = user->position.y - 1;
+      newPosition->x = user->position.x;
       break;
     case 's':
     case 'S':
-      newY = user->position.y + 1;
-      newX = user->position.x;
+      newPosition->y = user->position.y + 1;
+      newPosition->x = user->position.x;
       break;
     case 'a':
     case 'A':
-      newY = user->position.y;
-      newX = user->position.x - 1;
+      newPosition->y = user->position.y;
+      newPosition->x = user->position.x - 1;
       break;
     case 'd':
     case 'D':
-      newY = user->position.y;
-      newX = user->position.x + 1;
+      newPosition->y = user->position.y;
+      newPosition->x = user->position.x + 1;
       break;
     default:
       break;
   }
 
-  checkPosition(newY, newX, user); 
-
-  return 0;
+  return newPosition;
 }
 
-int checkPosition(int newY, int newX, Player *user)
+int checkPosition(Position *newPosition, Player *user, char **level)
 {
   int space;
-  switch (mvinch(newY, newX))
+  switch (mvinch(newPosition->y, newPosition->x))
   {
     case '.':
     case '#':
     case '+':
-      playerMove(newY, newX, user);
+      playerMove(newPosition, user, level);
       break;
     default:
       move(user->position.y, user->position.x);
@@ -67,11 +66,15 @@ int checkPosition(int newY, int newX, Player *user)
   return 0;
 }
 
-int playerMove(int y, int x, Player *user) {
-  mvprintw(user->position.y, user->position.x, ".");
+int playerMove(Position *newPosition, Player *user, char **level) {
+  char buffer[8];
 
-  user->position.y = y;
-  user->position.x = x;
+  sprintf(buffer, "%c", level[user->position.y][user->position.x]);
+
+  mvprintw(user->position.y, user->position.x, buffer);
+
+  user->position.y = newPosition->y;
+  user->position.x = newPosition->x;
 
   mvprintw(user->position.y, user->position.x, "@");
   move(user->position.y, user->position.x);
