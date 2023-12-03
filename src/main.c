@@ -5,15 +5,13 @@ int main()
   Player *user;
   int ch;
   Position *newPosition;
-  char **level;
+  Level *level;
 
   srand(time(NULL));
 
   screenSetUp();
 
-  mapSetUp();
-
-  level = saveLevelPositions();
+  level = createLevel(0);
 
   user = playerSetUp();
 
@@ -21,7 +19,7 @@ int main()
   while((ch = getch()) != 'q') 
   {
     newPosition = handleInput(ch, user);
-    checkPosition(newPosition, user, level);
+    checkPosition(newPosition, user, level->tiles);
   }
 
   endwin();
