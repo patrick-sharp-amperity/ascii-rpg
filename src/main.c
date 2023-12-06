@@ -11,7 +11,7 @@ int main()
 
   screenSetUp();
 
-  level = createLevel(0);
+  level = createLevel(1);
 
   user = playerSetUp();
 
