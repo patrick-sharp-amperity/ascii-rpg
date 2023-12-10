@@ -10,6 +10,8 @@ Level *createLevel(int level)
   newLevel->rooms = roomsSetUp();
   newLevel->tiles = saveLevelPositions();
 
+  newLevel->user = playerSetUp();
+
   addMonsters(newLevel);
 
   return newLevel;

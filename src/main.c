@@ -2,7 +2,6 @@
 
 int main()
 {
-  Player *user;
   int ch;
   Position *newPosition;
   Level *level;
@@ -13,13 +12,14 @@ int main()
 
   level = createLevel(1);
 
-  user = playerSetUp();
 
   // main game loop
   while((ch = getch()) != 'q') 
   {
-    newPosition = handleInput(ch, user);
-    checkPosition(newPosition, user, level->tiles);
+    newPosition = handleInput(ch, level->user);
+    checkPosition(newPosition, level->user, level->tiles);
+    moveMonsters(level);
+    move(level->user->position->y, level->user->position->x);
   }
 
   endwin();
@@ -161,8 +161,6 @@ int connectDoors(Position *doorOne, Position *doorTwo)
     }
 
     mvprintw(temp.y, temp.x, "#");
-
-    getch();
   }
   return 1;
 }
