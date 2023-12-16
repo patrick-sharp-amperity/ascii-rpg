@@ -82,17 +82,61 @@ int moveMonsters(Level * level)
   int x;
   for (x = 0; x < level->numberOfMonsters; x++)
   {
+    mvprintw(level->monsters[x]->position->y, level->monsters[x]->position->x, ".");
+
     if (level->monsters[x]->pathfinding == 1)
     {
       // random
+      pathfindingRandom(level->monsters[x]->position);
     }
     else
     {
       // seek
-      mvprintw(level->monsters[x]->position->y, level->monsters[x]->position->x, ".");
       pathfindingSeek(level->monsters[x]->position, level->user->position);
-      mvprintw(level->monsters[x]->position->y, level->monsters[x]->position->x, level->monsters[x]->string);
     }
+
+    mvprintw(level->monsters[x]->position->y, level->monsters[x]->position->x, level->monsters[x]->string);
+  }
+  return 1;
+}
+
+int pathfindingRandom(Position * position)
+{
+  int random;
+  random = rand() % 4;
+  switch (random)
+  {
+    // up
+    case 0:
+      if (mvinch(position->y - 1, position->x) == '.')
+      {
+        position->y = position->y - 1;
+      }
+      break;
+     // down
+    case 1:
+      if (mvinch(position->y + 1, position->x) == '.')
+      {
+        position->y = position->y + 1;
+      }
+      break;
+    // left
+    case 2:
+      if (mvinch(position->y, position->x - 1) == '.')
+      {
+        position->x = position->x - 1;
+      }
+      break;
+    // right
+    case 3:
+      if (mvinch(position->y, position->x + 1) == '.')
+      {
+        position->x = position->x + 1;
+      }
+      break;
+    // nothing
+    case 4:
+      break;
   }
   return 1;
 }
@@ -126,3 +170,4 @@ int pathfindingSeek(Position * start, Position * destination)
 
   return 1;
 }
+
