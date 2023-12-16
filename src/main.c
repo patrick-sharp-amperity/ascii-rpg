@@ -6,16 +6,16 @@ int main()
   Position *newPosition;
   Level *level;
 
-  srand(time(NULL));
-
   screenSetUp();
 
   level = createLevel(1);
+  printGameHub(level);
 
 
   // main game loop
   while((ch = getch()) != 'q') 
   {
+    printGameHub(level);
     newPosition = handleInput(ch, level->user);
     checkPosition(newPosition, level);
     moveMonsters(level);
@@ -26,17 +26,6 @@ int main()
 
   return 0;
 }
-
-int screenSetUp()
-{
-  initscr();
-  printw("Hello, world!");
-  noecho();
-  refresh();
-
-  return 1;
-}
-
 
 
 Room * createRoom(int x, int y, int height, int width)

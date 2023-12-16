@@ -36,6 +36,9 @@ typedef struct Player
   Position * position;
   int health;
   int attack;
+  int gold;
+  int maxHealth;
+  int exp;
 } Player;
 
 typedef struct Monster
@@ -51,7 +54,9 @@ typedef struct Monster
   Position * position;
 } Monster;
 
+// screen functions
 int screenSetUp();
+int printGameHub(Level *level);
 
 // level/map functions
 Room **roomsSetUp();
