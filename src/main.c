@@ -17,7 +17,7 @@ int main()
   while((ch = getch()) != 'q') 
   {
     newPosition = handleInput(ch, level->user);
-    checkPosition(newPosition, level->user, level->tiles);
+    checkPosition(newPosition, level);
     moveMonsters(level);
     move(level->user->position->y, level->user->position->x);
   }
