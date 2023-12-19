@@ -1,6 +1,6 @@
 #include <rogue.h>
 
-int combat(Player * player, Monster * monster, int order)
+int combat(Player *player, Monster *monster, int order)
 {
   // player attacking
   if (order == 1)

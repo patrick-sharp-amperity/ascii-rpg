@@ -65,12 +65,13 @@ Level *createLevel(int level);
 
 // player functions
 Player *playerSetUp();
+int placePlayer(Room **rooms, Player *user);
 Position *handleInput(int input, Player *user);
 int checkPosition(Position *newPosition, Level *level);
 int playerMove(Position *newPosition, Player *user, char **level);
 
 // room functions
-Room * createRoom(int x, int y, int height, int width);
+Room *createRoom(int grid);
 int connectDoors(Position *doorOne, Position *doorTwo);
 int drawRoom(Room *room);
 
