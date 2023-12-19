@@ -8,7 +8,7 @@ SOURCES = $(SRCDIR)*.c
 
 all: rogue run clean
 
-rogue:
+rogue: $(SOURCES)
 	$(CC) $(SOURCES) $(CFLAGS) -o $@
 
 run:
