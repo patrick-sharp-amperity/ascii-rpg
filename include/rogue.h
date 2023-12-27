@@ -3,6 +3,8 @@
 #include <stdlib.h>
 #include <time.h>
 
+// Struct definitions
+
 typedef struct Level
 {
   char **tiles;
@@ -53,6 +55,11 @@ typedef struct Monster
   int alive;
   Position * position;
 } Monster;
+
+
+// Global variables
+int MAX_HEIGHT; 
+int MAX_WIDTH; 
 
 // screen functions
 int screenSetUp();
