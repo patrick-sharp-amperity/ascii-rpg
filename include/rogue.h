@@ -28,10 +28,17 @@ typedef struct Room
   int height;
   int width;
 
-  Position **doors;
+  int numberOfDoors;
+  struct Door ** doors;
   // Monster **monsters;
   // Item **items;
 } Room;
+
+typedef struct Door
+{
+  Position position;
+  int connected;
+} Door;
 
 typedef struct Player
 {
@@ -78,19 +85,19 @@ int checkPosition(Position *newPosition, Level *level);
 int playerMove(Position *newPosition, Player *user, char **level);
 
 // room functions
-Room *createRoom(int grid);
-int connectDoors(Position *doorOne, Position *doorTwo);
+Room *createRoom(int grid, int numberOfDoors);
+void connectDoors(Level *level);
 int drawRoom(Room *room);
 
 // monster functions
 int addMonsters(Level *level);
-Monster * selectMonster(int level);
-Monster * createMonster(char symbol, int health, int attack, int speed, int defense, int pathfinding);
+Monster *selectMonster(int level);
+Monster *createMonster(char symbol, int health, int attack, int speed, int defense, int pathfinding);
 int killMonster(Monster *monster);
-int setStartingPosition(Monster * monster, Room * room);
-int moveMonsters(Level * level);
-int pathfindingSeek(Position * start, Position * destination);
-int pathfindingRandom(Position * position);
+int setStartingPosition(Monster *monster, Room *room);
+int moveMonsters(Level *level);
+int pathfindingSeek(Position *start, Position *destination);
+int pathfindingRandom(Position *position);
 
 int combat(Player *player, Monster *monster, int order);
 Monster *getMonsterAt(Position *position, Monster **monsters);

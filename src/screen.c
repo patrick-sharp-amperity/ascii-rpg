@@ -3,7 +3,6 @@
 int screenSetUp()
 {
   initscr();
-  printw("Hello world!");
   noecho();
   refresh();
 
