@@ -80,7 +80,7 @@ int setStartingPosition(Monster *monster, Room *room)
   monster->position->x = (rand() % (room->width - 2)) + room->position.x + 1;
   monster->position->y = (rand() % (room->height - 2)) + room->position.y + 1;
 
-  mvprintw(monster->position->y, monster->position->x, monster->string);
+  mvprintw(monster->position->y, monster->position->x, "%s", monster->string);
 
   return 0; 
 }
@@ -108,7 +108,7 @@ int moveMonsters(Level * level)
       pathfindingSeek(level->monsters[x]->position, level->user->position);
     }
 
-    mvprintw(level->monsters[x]->position->y, level->monsters[x]->position->x, level->monsters[x]->string);
+    mvprintw(level->monsters[x]->position->y, level->monsters[x]->position->x, "%s", level->monsters[x]->string);
   }
   return 1;
 }

@@ -1,21 +1,14 @@
-#include <rogue.h>
+#include "rogue.h"
+#include "mainMenu.h"
 
-int main()
+void gameLoop()
 {
   int ch;
-
-  MAX_HEIGHT = 25;
-  MAX_WIDTH = 100;
-
-
   Position *newPosition;
   Level *level;
 
-  screenSetUp();
-
   level = createLevel(1);
   printGameHub(level);
-
 
   // main game loop
   while((ch = getch()) != 'q') 
@@ -25,8 +18,40 @@ int main()
     checkPosition(newPosition, level);
     moveMonsters(level);
     move(level->user->position->y, level->user->position->x);
-  }
 
+    if (level->user->health <= 0)
+    {
+      return -1;
+    }
+  }
+}
+
+void menuLoop()
+{
+  int choice;
+  char *choices[] = {"Start Game", "End Game"};
+
+  while (true)
+  {
+    choice = mainMenu(2, choices);
+
+    switch (choice)
+    {
+      case START_GAME:
+        gameLoop();
+        clear();
+        break;
+      case QUIT_GAME:
+        return;
+        break;
+    }
+  }
+}
+
+int main()
+{
+  screenSetUp();
+  menuLoop();
   endwin();
 
   return 0;
