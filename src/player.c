@@ -85,18 +85,16 @@ int checkPosition(Position *newPosition, Level * level)
   return 0;
 }
 
-int playerMove(Position *newPosition, Player *user, char **level) {
-  char buffer[8];
-
-  sprintf(buffer, "%c", level[user->position->y][user->position->x]);
-
-  mvprintw(user->position->y, user->position->x, "%s", buffer);
-
+int playerMove(Position *newPosition, Player *user, char **level) 
+{
   user->position->y = newPosition->y;
   user->position->x = newPosition->x;
 
-  mvprintw(user->position->y, user->position->x, "@");
-  move(user->position->y, user->position->x);
-  
   return 0;
+}
+
+void drawPlayer(Player *player)
+{
+  mvprintw(player->position->y, player->position->x, "@");
+  move(player->position->y, player->position->x);
 }

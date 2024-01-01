@@ -70,7 +70,6 @@ Monster * createMonster(char symbol, int health, int attack, int speed, int defe
 
 int killMonster(Monster *monster)
 {
-  mvprintw(monster->position->y, monster->position->x, ".");
   monster->alive = 0;
   return 1;
 }
@@ -196,4 +195,12 @@ Monster *getMonsterAt(Position *position, Monster **monsters)
   }
   printw("Monster not found");
   return NULL;
+}
+
+void drawMonster(Monster *monster)
+{
+  if (monster->alive)
+  {
+    mvprintw(monster->position->y, monster->position->x, "%s", monster->string);
+  }
 }

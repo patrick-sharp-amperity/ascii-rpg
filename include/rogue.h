@@ -5,6 +5,12 @@
 
 // Struct definitions
 
+typedef struct Game
+{
+  struct Level *levels[10];
+  int currentLevel;
+} Game;
+
 typedef struct Level
 {
   char **tiles;
@@ -76,6 +82,9 @@ int printGameHub(Level *level);
 Room **roomsSetUp();
 char **saveLevelPositions();
 Level *createLevel(int level);
+void drawLevel(Level *level);
+int gameLoop(Game *game);
+
 
 // player functions
 Player *playerSetUp();
@@ -83,6 +92,7 @@ int placePlayer(Room **rooms, Player *user);
 Position *handleInput(int input, Player *user);
 int checkPosition(Position *newPosition, Level *level);
 int playerMove(Position *newPosition, Player *user, char **level);
+void drawPlayer(Player *player);
 
 // room functions
 Room *createRoom(int grid, int numberOfDoors);
@@ -98,6 +108,7 @@ int setStartingPosition(Monster *monster, Room *room);
 int moveMonsters(Level *level);
 int pathfindingSeek(Position *start, Position *destination);
 int pathfindingRandom(Position *position);
+void drawMonster(Monster *monster);
 
 int combat(Player *player, Monster *monster, int order);
 Monster *getMonsterAt(Position *position, Monster **monsters);

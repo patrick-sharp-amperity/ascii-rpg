@@ -1,35 +1,15 @@
 #include "rogue.h"
 #include "mainMenu.h"
 
-void gameLoop()
-{
-  int ch;
-  Position *newPosition;
-  Level *level;
-
-  level = createLevel(1);
-  printGameHub(level);
-
-  // main game loop
-  while((ch = getch()) != 'q') 
-  {
-    printGameHub(level);
-    newPosition = handleInput(ch, level->user);
-    checkPosition(newPosition, level);
-    moveMonsters(level);
-    move(level->user->position->y, level->user->position->x);
-
-    if (level->user->health <= 0)
-    {
-      return -1;
-    }
-  }
-}
 
 void menuLoop()
 {
   int choice;
   char *choices[] = {"Start Game", "End Game"};
+
+  Game game;
+  game.currentLevel = 0;
+
 
   while (true)
   {
@@ -38,7 +18,7 @@ void menuLoop()
     switch (choice)
     {
       case START_GAME:
-        gameLoop();
+        gameLoop(&game);
         clear();
         break;
       case QUIT_GAME:
