@@ -1,4 +1,5 @@
 #include <rogue.h>
+#include <item.h>
 
 int screenSetUp()
 {
@@ -25,4 +26,14 @@ int printGameHub(Level *level)
   printw("    ");
 
   return 1;
+}
+
+void printInventory(Player *player)
+{
+  int i;
+  mvprintw(26, 0, "    Inventory: ");
+  for (i = 0; i < player->numberItems; i++)
+  {
+    printw("%s", player->items[i]->string);
+  }
 }

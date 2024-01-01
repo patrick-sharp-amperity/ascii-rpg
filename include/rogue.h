@@ -1,6 +1,7 @@
 #pragma once
 #include <ncurses.h>
 #include <stdlib.h>
+#include <string.h>
 #include <time.h>
 
 // Struct definitions
@@ -54,6 +55,8 @@ typedef struct Player
   int gold;
   int maxHealth;
   int exp;
+  int numberItems;
+  struct Item **items;
 } Player;
 
 typedef struct Monster
@@ -73,6 +76,7 @@ typedef struct Monster
 // Global variables
 int MAX_HEIGHT; 
 int MAX_WIDTH; 
+int MAX_ITEMS;
 
 // screen functions
 int screenSetUp();

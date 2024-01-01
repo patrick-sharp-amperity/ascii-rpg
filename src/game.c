@@ -1,4 +1,5 @@
 #include "rogue.h"
+#include "utils.h"
 
 void render(Game *game)
 {
@@ -22,19 +23,32 @@ int gameLoop(Game *game)
   level = game->levels[game->currentLevel - 1];
 
   // main game loop
-  while(ch != 'q') 
+  while(1) 
   {
-    newPosition = handleInput(ch, level->user);
-    checkPosition(newPosition, level);
-    moveMonsters(level);
-
-    render(game);
-
-    if (level->user->health <= 0)
+    if (ch == 'q' || ch == 'Q')
     {
-      game->currentLevel = 0;
-      return -1;
+      break;
     }
+
+    if (ch == 'i' || ch == 'I')
+    {
+      printInventory(level->user);
+    }
+    else
+    {
+      newPosition = handleInput(ch, level->user);
+      checkPosition(newPosition, level);
+      moveMonsters(level);
+
+      render(game);
+
+      if (level->user->health <= 0)
+      {
+        game->currentLevel = 0;
+        return -1;
+      }
+    }
+
     ch = getch();
   }
   return 0;
